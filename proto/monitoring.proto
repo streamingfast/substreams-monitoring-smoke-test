@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package sf.substreams.monitoring.v1;
+
+message Stats {
+    BlockMetadata head_block = 1;
+    uint64 total_block_count = 2;
+    uint64 total_transaction_count = 3;
+}
+
+message BlockMetadata {
+    string hash = 1;
+    uint64 number = 2;
+    string parent_hash = 3;
+    uint64 parent_number = 4;
+    string timestamp = 5;
+    uint64 transaction_count = 6;
+}

@@ -1,0 +1,71 @@
+specVersion: v0.1.0
+package:
+  name: monitoring_smoke_test
+  version: v0.1.0
+  url: https://github.com/streamingfast/substreams-playground
+  doc: |
+    This package provides simple information about current head block as some quick stats
+    aggregation over the full chain for block count and transaction count. We uses this Substreams
+    as a smoke test for our production endpoints to monitor them.
+
+protobuf:
+  files:
+    - monitoring.proto
+  importPaths:
+    - ./proto
+
+binaries:
+  default:
+    type: wasm/rust-v1
+    file: target/wasm32-unknown-unknown/release/substreams.wasm
+
+modules:
+  # Ethereum
+  - name: map_eth_block
+    kind: map
+    initialBlock: 0
+    inputs:
+      - source: sf.ethereum.type.v2.Block
+    output:
+      type: proto:sf.substreams.monitoring.v1.BlockMetadata
+
+  - name: store_eth_stats
+    kind: store
+    updatePolicy: add
+    valueType: int64
+    inputs:
+      - map: map_eth_block
+
+  - name: map_eth_stats
+    kind: map
+    inputs:
+      - map: map_eth_block
+      - store: store_eth_stats
+        mode: deltas
+    output:
+      type: proto:sf.substreams.monitoring.v1.Stats
+
+  # # Solana
+  # - name: map_sol_block
+  #   kind: map
+  #   initialBlock: 0
+  #   inputs:
+  #     - source: sf.solana.type.v1.Block
+  #   output:
+  #     type: proto:sf.substreams.monitoring.v1.BlockMetadata
+
+  # - name: store_sol_stats
+  #   kind: store
+  #   updatePolicy: add
+  #   valueType: int64
+  #   inputs:
+  #     - map: map_sol_block
+
+  # - name: map_sol_stats
+  #   kind: map
+  #   inputs:
+  #     - map: map_sol_block
+  #     - store: store_sol_stats
+  #       mode: deltas
+  #   output:
+  #     type: proto:sf.substreams.monitoring.v1.Stats

@@ -1,0 +1,16 @@
+[package]
+name = "substreams-monitoring-smoke-test"
+version = "0.1.0"
+description = "Substreams for smoke test monitoring"
+edition = "2021"
+
+[lib]
+name = "substreams"
+crate-type = ["cdylib"]
+
+[dependencies]
+chrono = { version = "0.4", features = [ "std" ], default-features = false }
+prost = "0.11"
+substreams = "0.5.1"
+substreams-ethereum = "0.8.0"
+substreams-solana = "0.2.0"
