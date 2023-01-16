@@ -22,4 +22,4 @@ protogen:
 
 .PHONY: stream
 package: build
-	substreams package substreams.yaml
+	substreams pack substreams.yaml
