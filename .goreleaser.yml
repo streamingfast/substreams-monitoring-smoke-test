@@ -1,0 +1,19 @@
+project_name: substreams-monitoring-smoke-test
+
+release:
+  draft: true
+  github:
+    owner: streamingfast
+    name: substreams-monitoring-smoke-test
+  name_template: '{{.Tag}}'
+  target_commitish: '{{ .Commit }}'
+  extra_files:
+    - glob: build/substreams-monitoring-smoke-test-{{.Tag}}.spkg
+
+snapshot:
+  name_template: '{{ .Tag }}-next'
+
+checksum:
+  name_template: checksums.txt
+
+dist: dist
