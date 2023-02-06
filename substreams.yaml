@@ -1,7 +1,7 @@
 specVersion: v0.1.0
 package:
   name: monitoring_smoke_test
-  version: v1.0.1
+  version: v1.0.2
   url: https://github.com/streamingfast/substreams-playground
   doc: |
     This package provides simple information about current head block as some quick stats
