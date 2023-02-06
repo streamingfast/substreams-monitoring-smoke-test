@@ -8,7 +8,7 @@ release:
   name_template: '{{.Tag}}'
   target_commitish: '{{ .Commit }}'
   extra_files:
-    - glob: build/substreams-monitoring-smoke-test-{{.Tag}}.spkg
+    - glob: build/monitoring-smoke-test-{{.Tag}}.spkg
 
 builds:
 - skip: true
