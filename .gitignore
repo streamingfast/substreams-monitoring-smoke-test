@@ -2,6 +2,7 @@
 .release_notes.md
 .envrc
 *.spkg
+dist/
 /target/
 /localblocks/
 /localdata/

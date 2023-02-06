@@ -10,10 +10,16 @@ release:
   extra_files:
     - glob: build/substreams-monitoring-smoke-test-{{.Tag}}.spkg
 
-snapshot:
-  name_template: '{{ .Tag }}-next'
+builds:
+- skip: true
+
+archives:
+- format: binary
 
 checksum:
-  name_template: checksums.txt
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
 
 dist: dist
