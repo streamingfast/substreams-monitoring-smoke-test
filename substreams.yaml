@@ -45,27 +45,27 @@ modules:
     output:
       type: proto:sf.substreams.monitoring.v1.Stats
 
-  # # Solana
-  # - name: map_sol_block
-  #   kind: map
-  #   initialBlock: 0
-  #   inputs:
-  #     - source: sf.solana.type.v1.Block
-  #   output:
-  #     type: proto:sf.substreams.monitoring.v1.BlockMetadata
+  # Solana
+  - name: map_sol_block
+    kind: map
+    initialBlock: 1690600
+    inputs:
+      - source: sf.solana.type.v1.Block
+    output:
+      type: proto:sf.substreams.monitoring.v1.BlockMetadata
 
-  # - name: store_sol_stats
-  #   kind: store
-  #   updatePolicy: add
-  #   valueType: int64
-  #   inputs:
-  #     - map: map_sol_block
+  - name: store_sol_stats
+    kind: store
+    updatePolicy: add
+    valueType: int64
+    inputs:
+      - map: map_sol_block
 
-  # - name: map_sol_stats
-  #   kind: map
-  #   inputs:
-  #     - map: map_sol_block
-  #     - store: store_sol_stats
-  #       mode: deltas
-  #   output:
-  #     type: proto:sf.substreams.monitoring.v1.Stats
+  - name: map_sol_stats
+    kind: map
+    inputs:
+      - map: map_sol_block
+      - store: store_sol_stats
+        mode: deltas
+    output:
+      type: proto:sf.substreams.monitoring.v1.Stats

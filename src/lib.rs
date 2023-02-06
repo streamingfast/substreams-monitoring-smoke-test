@@ -59,7 +59,7 @@ fn map_sol_block(block: sol::v1::Block) -> Result<BlockMetadata, Error> {
                     .unwrap_or_else(|| panic!("invalid date for timestamp {}", x.timestamp))
                     .to_string()
             })
-            .unwrap(),
+            .unwrap_or("<Unavailable>".to_string()),
         transaction_count: block.transactions.len() as u64,
     })
 }
