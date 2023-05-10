@@ -8,24 +8,25 @@ use substreams::{store, Hex};
 use substreams_ethereum::pb::eth;
 use substreams_solana::pb::sol;
 
+static mut COUNTER: u64 = 0;
+
 const KEY_TOTAL_BLOCK_COUNT: &str = "total_block_count";
 const KEY_TOTAL_TRX_COUNT: &str = "total_trx_count";
 
 #[substreams::handlers::map]
 fn map_eth_block(block: eth::v2::Block) -> Result<BlockMetadata, Error> {
     let header = block.header.as_ref().unwrap();
-
-    Ok(BlockMetadata {
-        hash: Hex(&block.hash).to_string(),
-        number: block.number,
-        parent_hash: Hex(&header.parent_hash).to_string(),
-        parent_number: match block.number {
-            0 => 0,
-            x => x - 1,
-        },
-        timestamp: header.timestamp.as_ref().unwrap().to_string(),
-        transaction_count: block.transaction_traces.len() as u64,
-    })
+    unsafe {
+        COUNTER += 5;
+        Ok(BlockMetadata {
+            hash: Hex(&block.hash).to_string(),
+            number: block.number,
+            parent_hash: Hex(&header.parent_hash).to_string(),
+            parent_number: COUNTER,
+            timestamp: header.timestamp.as_ref().unwrap().to_string(),
+            transaction_count: block.transaction_traces.len() as u64,
+        })
+    }
 }
 
 #[substreams::handlers::store]
