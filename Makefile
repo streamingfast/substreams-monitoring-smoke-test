@@ -1,5 +1,6 @@
 ENDPOINT_ETH ?= mainnet.eth.streamingfast.io:443
 ENDPOINT_SOL ?= mainnet.sol.streamingfast.io:443
+ENDPOINT_NEAR ?= mainnet.near.streamingfast.io:443
 STOP_BLOCK ?= +100
 
 .PHONY: build
@@ -13,6 +14,10 @@ stream_eth: build
 .PHONY: stream_sol
 stream_sol: build
 	substreams run -e $(ENDPOINT_SOL) substreams.yaml map_sol_stats -t $(STOP_BLOCK) $(STREAM_ARGS)
+
+.PHONY: stream_near
+stream_near: build
+	substreams run -e $(ENDPOINT_NEAR) substreams.yaml map_near_stats -t $(STOP_BLOCK) $(STREAM_ARGS)
 
 .PHONY: protogen
 protogen:

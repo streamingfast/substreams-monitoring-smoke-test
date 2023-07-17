@@ -73,7 +73,7 @@ modules:
   # Near
   - name: map_near_block
     kind: map
-    initialBlock: 0
+    initialBlock: 9820214
     inputs:
       - source: sf.near.type.v1.Block
     output:
