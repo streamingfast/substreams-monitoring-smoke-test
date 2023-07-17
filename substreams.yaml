@@ -69,3 +69,28 @@ modules:
         mode: deltas
     output:
       type: proto:sf.substreams.monitoring.v1.Stats
+
+  # Near
+  - name: map_near_block
+    kind: map
+    initialBlock: 0
+    inputs:
+      - source: sf.near.type.v1.Block
+    output:
+      type: proto:sf.substreams.monitoring.v1.BlockMetadata
+
+  - name: store_near_stats
+    kind: store
+    updatePolicy: add
+    valueType: int64
+    inputs:
+      - map: map_near_block
+
+  - name: map_near_stats
+    kind: map
+    inputs:
+      - map: map_near_block
+      - store: store_near_stats
+        mode: deltas
+    output:
+      type: proto:sf.substreams.monitoring.v1.Stats

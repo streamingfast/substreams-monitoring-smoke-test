@@ -6,7 +6,8 @@ use substreams::errors::Error;
 use substreams::prelude::*;
 use substreams::{store, Hex};
 use substreams_ethereum::pb::eth;
-use substreams_solana::pb::sol;
+use substreams_solana::pb::sf::solana::r#type::v1 as sol;
+use substreams_near::pb::sf::near::r#type::v1 as near;
 
 const KEY_TOTAL_BLOCK_COUNT: &str = "total_block_count";
 const KEY_TOTAL_TRX_COUNT: &str = "total_trx_count";
@@ -42,7 +43,7 @@ fn map_eth_stats(
 }
 
 #[substreams::handlers::map]
-fn map_sol_block(block: sol::v1::Block) -> Result<BlockMetadata, Error> {
+fn map_sol_block(block: sol::Block) -> Result<BlockMetadata, Error> {
     Ok(BlockMetadata {
         hash: block.blockhash,
         number: block.slot,
@@ -71,6 +72,33 @@ fn store_sol_stats(metadata: BlockMetadata, stats: store::StoreAddInt64) {
 
 #[substreams::handlers::map]
 fn map_sol_stats(
+    metadata: BlockMetadata,
+    stats: store::Deltas<DeltaInt64>,
+) -> Result<Stats, Error> {
+    map_stats(metadata, stats)
+}
+
+#[substreams::handlers::map]
+fn map_near_block(block: near::Block) -> Result<BlockMetadata, Error> {
+    let header = block.header.as_ref().unwrap();
+
+    Ok(BlockMetadata {
+        hash: Hex(&header.clone().hash.unwrap().bytes).to_string(),
+        number: header.height,
+        parent_hash: Hex(&header.clone().prev_hash.unwrap().bytes).to_string(),
+        parent_number: header.prev_height,
+        timestamp: header.timestamp.to_string(),
+        transaction_count: 0,
+    })
+}
+
+#[substreams::handlers::store]
+fn store_near_stats(metadata: BlockMetadata, stats: store::StoreAddInt64) {
+    store_stats(metadata, stats)
+}
+
+#[substreams::handlers::map]
+fn map_near_stats(
     metadata: BlockMetadata,
     stats: store::Deltas<DeltaInt64>,
 ) -> Result<Stats, Error> {
