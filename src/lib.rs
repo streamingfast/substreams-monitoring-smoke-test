@@ -82,8 +82,13 @@ fn map_sol_stats(
 fn map_near_block(block: near::Block) -> Result<BlockMetadata, Error> {
     let header = block.header.as_ref().unwrap();
 
+    let hash = match block.hash() {
+        Some(hash) => hash,
+        None => "".to_string(),
+    };
+
     Ok(BlockMetadata {
-        hash: Hex(&header.clone().hash.unwrap().bytes).to_string(),
+        hash: hash,
         number: header.height,
         parent_hash: Hex(&header.clone().prev_hash.unwrap().bytes).to_string(),
         parent_number: header.prev_height,
